@@ -11,18 +11,21 @@
 		{
 			<div class="col-sm-4">
 				<div class="product-image-wrapper">
-					<a>
 						<div class="single-products">
+							
 							<div class="productinfo text-center">
+								<a asp-action="Details" asp-controller="Product" asp-route-ID="@item.Id">
 								<img src="~/images/@item.Image" alt="@item.Name" style="width:200px; height:150px; object-fit:cover;" />
 								<h2>$@item.Price</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
-								<a class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+								</a>
+								<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 							</div>
+						
 						</div>
-					</a>
+					
 					<div class="choose">
 						<ul class="nav nav-pills nav-justified">
 							<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
