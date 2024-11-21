@@ -1,17 +1,17 @@
 ﻿@model ProductModel
 
 @{
-    ViewData["title"] = "Create Product";
+    ViewData["title"] = "Edit Product";
 }
 <h4>Create Product</h4>
 <div class="col-md-9">
-<form asp-action="Create" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly"class="text-danger"></div>
-    <div class="form-group">
-        <label>Name</label>
-        <input asp-for="Name" class="form-control"/>
-        <span asp-validation-for="Name" class="text-danger"/>
-    </div>
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label>Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger" />
+        </div>
         <div class="form-group">
             <label>Price</label>
             <input asp-for="Price" class="form-control" />
@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <label>Description</label>
-            <input asp-for="Description" class="form-control" ></input>
+            <input asp-for="Description" class="form-control"></input>
             <span asp-validation-for="Description" class="text-danger" />
         </div>
         <div class="form-group">
@@ -44,20 +44,22 @@
             <label>Image</label>
             <input asp-for="ImageUpload" class="form-control-file" />
             <span asp-validation-for="ImageUpload" class="text-danger" />
+            <img class="mt-2" src="~/images/@Model.Image" width="100" />
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Create</button>
+            <button class="btn btn-primary">Update</button>
         </div>
-</form>
-<a asp-action="Index">Back to List Product</a>
+    </form>
+    <a asp-action="Index">Back to List Product</a>
 </div>
 @section Scripts {
-     @{
-         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-     }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     @* <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace("Description");
     </script> *@
- }
+}
+
 
