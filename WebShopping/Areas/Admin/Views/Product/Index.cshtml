@@ -3,7 +3,7 @@
     ViewData["title"] = "Product Listed";
 }
 <h3>List Product</h3>
-<a class="btn btn-default" asp-action="Add" asp-controller="Product">Add Product</a>
+<a class="btn btn-default" asp-action="Create" asp-controller="Product">Add Product</a>
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +31,7 @@
                 <td>@item.Category.Name</td>
                 <td>@item.Brand.Name</td>
                 <td>
-                    <a class="btn btn-warning btn-sm" asp-action="Add" asp-controller="Product" asp-route-Id="@item.Id">Edit</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Product" asp-route-Id="@item.Id">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Product" asp-route-Id="@item.Id">Delete</a>
                 </td>
             </tr>
