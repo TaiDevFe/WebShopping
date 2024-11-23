@@ -16,6 +16,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 var app = builder.Build();
+app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");
 app.UseSession();
 
 // Configure the HTTP request pipeline.
