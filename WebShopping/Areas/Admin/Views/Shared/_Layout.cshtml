@@ -68,10 +68,9 @@
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a asp-action="Index" asp-controller="Home" class="active">Home</a></li>
-
-
 								<li><a asp-action="Index" asp-controller="Product">Products</a></li>
 								<li><a asp-action="Index" asp-controller="Category">Categories</a></li>
+								<li><a asp-action="Index" asp-controller="Brand">Brands</a></li>
 							</ul>
 						</div>
 					</div>
@@ -106,6 +105,7 @@
 	<script src="~//price-range.js"></script>
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
+	<script src="~/backend/js/site.js"></script>
 	@await RenderSectionAsync("Scripts",required:false);
 </body>
 </html>
