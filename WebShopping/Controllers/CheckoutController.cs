@@ -29,7 +29,20 @@ namespace WebShopping.Controllers
 				orderItem.CreatedDate = DateTime.Now;
 				_dataContext.Add(orderItem);
 				_dataContext.SaveChanges();
-				TempData["success"] = "Đơn hàng đã được tạo";
+				List<CartItemModel> cartItems = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
+				foreach (var cart in cartItems)
+				{
+					var orderdetails = new OrderDetails();
+					orderdetails.UserName = userEmail;
+					orderdetails.OrderCode = ordercode;
+					orderdetails.ProductId = cart.ProductID;
+					orderdetails.Price = cart.Price;
+					orderdetails.Quantity = cart.Quantity;
+					_dataContext.Add(orderdetails);
+					_dataContext.SaveChanges();
+				}
+				HttpContext.Session.Remove("Cart");
+				TempData["success"] = "Đặt hàng thành công";
 				return RedirectToAction("Index","Cart");
 			}
 			return View();
