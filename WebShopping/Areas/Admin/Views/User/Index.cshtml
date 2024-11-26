@@ -11,7 +11,7 @@
             <th scope="col">User</th>
             <th scope="col">Email</th>
             <th scope="col">Password</th>
-            <th scope="col">Phone</th>
+            <th scope="col">Phone Number</th>
             <th scope="col">Role</th>
         </tr>
     </thead>
@@ -23,8 +23,9 @@
                 <td>@item.UserName</td>
                 <td>@item.Email</td>
                 <td>@item.PasswordHash</td>
+                <td>@item.PhoneNumber</td>
                 <td>
-                   
+                   @item.RoleId
                 </td>
                 <td>
                     <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="User" asp-route-Id="@item.Id">Edit</a>
