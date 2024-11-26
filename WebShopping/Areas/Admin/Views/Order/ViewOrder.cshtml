@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+}
+@model IEnumerable<OrderDetails>
+@{
+    ViewData["title"] = "Order Listed";
+}
+<h3>List Order</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Order Code</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>#</th>
+                <th scope="row">@item.OrderCode</th>
+                <td>@item.UserName</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Price * item.Quantity)</td>
+            
+            </tr>
+        }
+    </tbody>
+</table>
+
