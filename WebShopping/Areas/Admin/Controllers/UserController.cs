@@ -24,7 +24,13 @@ namespace WebShopping.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+            var usersWithRoles = await (from u in _dataContext.Users
+                                     join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+                                     join r in _dataContext.Roles on ur.RoleId equals r.Id
+                                     select new {User = u, RoleName = r.Name}
+                                    ).ToListAsync();
+            return View(usersWithRoles);
+            //return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
         }
 		[HttpGet]
 		public async Task<IActionResult> Create()
