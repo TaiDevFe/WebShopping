@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<CategoryModel>
 @{
     ViewData["title"] = "Category Listed";
+    
 }
 <h3>List Category</h3>
 <a class="btn btn-default" asp-action="Create" asp-controller="Category">Add Category</a>
@@ -39,5 +40,11 @@
                 </td>
             </tr>
         }
+        @* <partial name="_Paging" model="@pager" />
+        @Html.Partial("_Paging", pager) *@
+       
     </tbody>
 </table>
+<div class="pagination-container">
+    @await Html.PartialAsync("_Paging", ViewBag.Pager as WebShopping.Models.Paginate)
+</div>

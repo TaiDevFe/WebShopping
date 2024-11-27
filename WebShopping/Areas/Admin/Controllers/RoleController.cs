@@ -8,7 +8,7 @@ using WebShopping.Repository;
 namespace WebShopping.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin , Sales")]
     public class RoleController : Controller
     {
         private readonly DataContext _dataContext;

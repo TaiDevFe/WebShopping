@@ -9,7 +9,7 @@ using WebShopping.Repository;
 namespace WebShopping.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin , Sales")]
     public class UserController : Controller
     {
         private readonly UserManager<AppUserModel> _userManager;
@@ -29,8 +29,7 @@ namespace WebShopping.Areas.Admin.Controllers
                                      join r in _dataContext.Roles on ur.RoleId equals r.Id
                                      select new {User = u, RoleName = r.Name}
                                     ).ToListAsync();
-            return View(usersWithRoles);
-            //return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+            return View(usersWithRoles);           
         }
 		[HttpGet]
 		public async Task<IActionResult> Create()

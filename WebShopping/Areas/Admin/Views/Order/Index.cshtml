@@ -22,8 +22,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <th>#</th>
-                <th scope="row">@item.OrderCode</th>
+                <th>@item.Id</th>
+                <th>@item.OrderCode</th>
                 <td>@item.UserName</td>
                 <td>@item.CreatedDate</td>
                 <td>
@@ -33,7 +33,7 @@
                     }
                     else
                     {
-                        <span class="text text-danger">Đơn hàng thành công</span>
+                        <span class="text text-danger">Đã xử lý</span>
                     }
                 </td>
                 <td>

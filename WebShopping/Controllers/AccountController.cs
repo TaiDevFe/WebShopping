@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebShopping.Areas.Admin.Repository;
 using WebShopping.Models;
 using WebShopping.Models.ViewModels;
 
@@ -9,10 +10,12 @@ namespace WebShopping.Controllers
 	{
 		private UserManager<AppUserModel> _userManager;
 		private SignInManager<AppUserModel> _signInManager;
-		public AccountController(SignInManager<AppUserModel> signInManager, UserManager<AppUserModel> userManager)
+		private readonly IEmailSender _emailSender;
+		public AccountController(SignInManager<AppUserModel> signInManager, UserManager<AppUserModel> userManager , IEmailSender emailSender)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_emailSender = emailSender;
 		}
 		
 		public IActionResult Login(string returnUrl)
@@ -27,7 +30,12 @@ namespace WebShopping.Controllers
 				Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false,false);
 				if(result.Succeeded)
 				{
-					return Redirect(loginViewModel.ReturnUrl ?? "/");
+					TempData["success"] = "Đăng nhập thành công";
+					var receiver = "demologin979@gmail.com";
+					var subject = "Đăng nhập trên thiết bị thành công";
+					var mesage = "Đăng nhập thành công";
+					await _emailSender.SendEmailAsync(receiver, subject, mesage);
+                    return Redirect(loginViewModel.ReturnUrl ?? "/");
 				}
 				ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
 			}	
