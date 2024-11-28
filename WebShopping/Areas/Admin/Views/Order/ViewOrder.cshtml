@@ -43,6 +43,7 @@
             <option value="0">Đã xử lý</option>
         </select>
     </td>
+    <a class="btn btn-primary" href="Index">Quay về</a>
     </tbody>
 </table>
 @section Scripts {
@@ -51,25 +52,27 @@
             $('.select-update-order').change(function () {
                 var status = $(this).val();
                 var ordercode = $('.getId').val();
+                alert(status)
+                alert(ordercode)
                 $.ajax({
-                    type : "POST",
-                    url : "@Url.Action("UpdateOrder")",
+                    type: "POST",
+                    url: "@Url.Action("UpdateOrder")",
                     data: { status: status, ordercode: ordercode },
                     success: function (result) {
                         if (result.success) {
                             Swal.fire("Cập nhật đơn hàng thành công")
+                            
                         }
                         else {
                             Swal.fire("Cập nhật đơn hàng thất bại " + result.message)
-                            
                         }
                     },
                     Error: function (req, status, error) {
                         console.log("Error updating order:", error);
                     }
-                })
-            }
-        }
+                });
+            });
+                });
     </script>
 }
 

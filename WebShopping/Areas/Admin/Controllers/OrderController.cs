@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebShopping.Models;
 using WebShopping.Repository;
 
 namespace WebShopping.Areas.Admin.Controllers
@@ -43,5 +44,30 @@ namespace WebShopping.Areas.Admin.Controllers
 				return StatusCode(500, "Lỗi cập nhật trạng thái đơn hàng");
 			}
 		}
-	}
+		[HttpGet]
+        public async Task<IActionResult> Delete(string ordercode)
+        {
+
+            var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode.ToString() == ordercode);
+            if (order == null)
+            {
+                TempData["error"] = "Đơn hàng không tồn tại.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                _dataContext.Orders.Remove(order);
+                await _dataContext.SaveChangesAsync();
+                TempData["success"] = "Đã xóa đơn hàng thành công.";
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = $"Xóa đơn hàng thất bại: {ex.Message}";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+    }
 }
