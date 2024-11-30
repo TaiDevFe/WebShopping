@@ -4,7 +4,7 @@
 }
 <h3>List Product</h3>
 <a class="btn btn-default" asp-action="Create" asp-controller="Product">Add Product</a>
-<table class="table">
+<table class="table" id="myTable">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -25,7 +25,7 @@
                 <th scope="row">@item.Id</th>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
-                <td>@item.Price</td>
+                <td>@item.Price.ToString("#,##0 VND")</td>
                 <td><img src="~/images/@item.Image" width="100" /></td>
                 <td>@item.Slug</td>
                 <td>@item.Category.Name</td>

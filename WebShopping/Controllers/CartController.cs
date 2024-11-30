@@ -39,7 +39,7 @@ namespace WebShopping.Controllers
                 cartItems.Quantity += 1;
             }
             HttpContext.Session.SetJson("Cart", cart);
-            TempData["success"] = "Thêm vào giỏ hàng thành công";
+            //TempData["success"] = "Thêm vào giỏ hàng thành công";
             return Redirect(Request.Headers["Referer"].ToString());
         }
         public async Task<IActionResult> Decrease(int Id)

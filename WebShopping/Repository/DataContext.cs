@@ -16,6 +16,7 @@ namespace WebShopping.Repository
 		public DbSet<CategoryModel> Categories { get; set; }
 		public DbSet<OrderModel> Orders { get; set; }
 		public DbSet<OrderDetails> OrderDetails { get; set; }
-	
+		public DbSet<RatingModel> Ratings { get; set; }
+
 	}
 }

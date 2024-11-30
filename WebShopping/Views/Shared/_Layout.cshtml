@@ -7,7 +7,9 @@
 	<meta name="author" content="">
 	<title>Home | WebShopping</title>
 	<link href="~/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/css/font-awesome.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+
 	<link href="~/css/prettyPhoto.css" rel="stylesheet">
 	<link href="~/css/price-range.css" rel="stylesheet">
 	<link href="~/css/animate.css" rel="stylesheet">
@@ -148,9 +150,12 @@
 						</div>
 					</div>
 					<div class="col-sm-3">
+						<form asp-controller="Product" asp-action="Search" method="post">
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search" />
+							<input type="text" placeholder="Search" name="searchTerm" />
+							<button class="btn btn-warning" type="submit">Search</button>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>

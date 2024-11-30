@@ -2,10 +2,9 @@
 <div class="col-sm-3">
 	@Html.Partial("_SideBarPartial")
 </div>
-
 <div class="col-sm-9 padding-right">
 	<div class="features_items">
-		<!--features_items-->
+		<!--features_items--> 
 		<h2 class="title text-center">Features Items</h2>
 		@foreach (var item in Model)
 		{
@@ -16,12 +15,12 @@
 							<div class="productinfo text-center">
 								<a asp-action="Details" asp-controller="Product" asp-route-ID="@item.Id">
 								<img src="~/images/@item.Image" alt="@item.Name" style="width:200px; height:150px; object-fit:cover;" />
-								<h2>$@item.Price</h2>
+								<h2>$@item.Price.ToString("#,##0 VND")</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
 								</a>
-							<button class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</button>
+							<button class="btn btn-default add-to-cart" data-product_id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</button>
 								@* <a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a> *@
 							</div>
 						
@@ -37,3 +36,22 @@
 			</div>
 			<!--features_items-->
 		}
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('.add-to-cart').click(function () {
+				var Id = $(this).data("product_id");
+				$.ajax({
+					type: "POST",
+					url: "@Url.Action("Add","Cart")",
+					data: { Id: Id },
+					success: function (result) {
+						if (result) {
+							Swal.fire("Thêm vào giỏ hàng thành công.");
+						}
+					}
+				});
+			});
+				});
+	</script>
+}
