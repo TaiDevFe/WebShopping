@@ -1,4 +1,4 @@
-﻿@model ProductModel
+﻿@model ProductDetailsViewModel
 
 <div class="row">
 	<div class="col-sm-3">
@@ -10,7 +10,7 @@
 			<!--product-details-->
 			<div class="col-sm-5">
 				<div class="view-product">
-					<img src="~/images/@Model.Image" alt="@Model.Name" />
+					<img src="~/images/@Model.ProductDetails.Image" alt="@Model.ProductDetails.Name" />
 					<h3>ZOOM</h3>
 				</div>
 				<div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -37,20 +37,20 @@
 			<div class="col-sm-7">
 				<div class="product-information">
 					<!--/product-information-->
-					<h2>@Model.Name</h2>
+					<h2>@Model.ProductDetails.Name</h2>
 					<span>
-						<span>@Model.Price.ToString("#,##0 VND")</span>
+						<span>@Model.ProductDetails.Price.ToString("#,##0 VND")</span>
 						<label>Quantity: 1</label>
 						<input type="text" value="3" />
-						<button asp-action="Add" asp-controller="Cart" asp-route-Id="@Model.Id" type="button" class="btn btn-fefault cart">
+						<button asp-action="Add" asp-controller="Cart" asp-route-Id="@Model.ProductDetails.Id" type="button" class="btn btn-fefault cart">
 							<i class="fa fa-shopping-cart"></i>
 							Add to cart
 						</button>
 					</span>
 					<p><b>Availability:</b> In Stock</p>
 					<p><b>Condition:</b> New</p>
-					<p><b>Brand:</b> @Model.Brand.Name</p>
-					<p><b>Category:</b> @Model.Category.Name</p>
+					<p><b>Brand:</b> @Model.ProductDetails.Brand.Name</p>
+					<p><b>Category:</b> @Model.ProductDetails.Category.Name</p>
 					<a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
 				</div><!--/product-information-->
 			</div>
@@ -68,46 +68,76 @@
 			</div>
 			<div class="tab-content">
 				<div class="tab-pane fade active in" id="details">
-							@Model.Description			
-					</div>				
+							@Model.ProductDetails.Description			
+				</div>
+				<div class="tab-pane fade active in" id="reviews">
+					<div class="col-sm-12">
+						<ul>
+							<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
+							<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
+							<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+						</ul>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+						<p><b>Write Your Review</b></p>
+
+						<form autocomplete="off" asp-action="CommentProduct" asp-controller="Product" method="POST">
+							<span>
+								<input type="hidden" asp-for="@Model.ProductDetails.Id" name="ProductId"/>
+								<input type="hidden" name="Star" value="4" />
+								<input asp-for="@Model.Name" type="text" placeholder="Your Name" />
+								<span asp-validation-for="@Model.Name" class="text-danger"></span>
+								<input asp-for="@Model.Email" type="email" placeholder="Email Address" />
+								<span asp-validation-for="@Model.Email" class="text-danger"></span>
+							</span>
+							<textarea asp-for="@Model.Comment"></textarea>
+							<span asp-validation-for="@Model.Comment" class="text-danger"></span>
+							<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
+							<button type="submit" class="btn btn-default pull-right">
+								Submit
+							</button>
+						</form>
+					</div>
+				</div>
 				</div>
 			</div>
-		</div><!--/category-tab-->
-		
-		<div class="recommended_items"> 
+		<div class="recommended_items">
 			<!--recommended_items-->
-			<h2 class="title text-center">Related Products</h2>
+			<h2 class="title text-center">Sản phẩm liên quan</h2>
 			<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner">
 					<div class="item active">
-					@foreach (var relatedProduct in @ViewBag.RelatedProducts as IEnumerable<ProductModel>)
-					{
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
+						@foreach (var relatedProduct in ViewBag.RelatedProducts as IEnumerable<ProductModel>)
+						{
+							<div class="col-sm-4">
+								<div class="product-image-wrapper">
+									<div class="single-products">
 
-									<div class="productinfo text-center">
-										<a asp-action="Details" asp-controller="Product" asp-route-ID="@relatedProduct.Id">
-											<img src="~/images/@relatedProduct.Image" alt="@relatedProduct.Name" style="width:200px; height:150px; object-fit:cover;" />
-											<h2>$@relatedProduct.Price.ToString("#,##0 VND")</h2>
-											<p>@relatedProduct.Name</p>
-											<p>Danh mục : @relatedProduct.Category.Name</p>
-											<p>Thương hiệu : @relatedProduct.Brand.Name</p>
-										</a>								
+										<div class="productinfo text-center">
+											<a asp-action="Details" asp-controller="Product" asp-route-ID="@relatedProduct.Id">
+												<img src="~/images/@relatedProduct.Image" alt="@relatedProduct.Name" style="width:200px; height:150px; object-fit:cover;" />
+												<h2>$@relatedProduct.Price.ToString("#,##0 VND")</h2>
+												<p>@relatedProduct.Name</p>
+												<p>Danh mục : @relatedProduct.Category.Name</p>
+												<p>Thương hiệu : @relatedProduct.Brand.Name</p>
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					}
-				</div>
-				<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+						}
+					</div>
+					@* 	<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
 					<i class="fa fa-angle-left"></i>
-				</a>
-				<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+					</a>
+					<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
 					<i class="fa fa-angle-right"></i>
-				</a>
-			</div>
-		</div><!--/recommended_items-->
+					</a> *@
+				</div>
+			</div><!--/recommended_items-->
+		</div>
+		</div><!--/category-tab-->
 
+	
 	</div>
-</div>
+
+

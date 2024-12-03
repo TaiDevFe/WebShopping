@@ -22,6 +22,10 @@ namespace WebShopping.Controllers
             var products = _dataContext.Products.Include("Category").Include("Brand").ToList();
             return View(products);
         }
+        public IActionResult Contact()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
@@ -41,5 +45,6 @@ namespace WebShopping.Controllers
             }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+       
     }
 }
