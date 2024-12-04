@@ -1,5 +1,54 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ContactModel
+
+<div class="container my-5">
+    <div class="row gy-4 gx-4">
+        <!-- Bản đồ và mô tả -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <!-- Bản đồ -->
+                    <div class="mb-3">
+                        @Html.Raw(Model.Map)
+                    </div>
+                    <!-- Mô tả -->
+                    <p class="mb-0">@Html.Raw(Model.Description)</p>
+                </div>
+            </div>
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">Thông tin liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>Tên:</strong> @Model.Name</li>
+                        <li><strong>Email:</strong> @Model.Email</li>
+                        <li><strong>Điện thoại:</strong> @Model.Phone</li>
+                    </ul>
+                </div>
+            </div>
+        </div>  
+
+
+        <!-- Facebook Page -->
+        <div class="col-md-6" style="padding:100px">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">Facebook</h5>
+                    <div class="fb-page"
+                         data-href="https://www.facebook.com/techshopLTDeg"
+                         data-tabs="timeline"
+                         data-width="300px"
+                         data-height=""
+                         data-small-header="false"
+                         data-adapt-container-width="true"
+                         data-hide-cover="false"
+                         data-show-facepile="true">
+                        <blockquote cite="https://www.facebook.com/techshopLTDeg" class="fb-xfbml-parse-ignore">
+                            <a href="https://www.facebook.com/techshopLTDeg">Tech Shop</a>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

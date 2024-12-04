@@ -1,0 +1,58 @@
+﻿@model ContactModel
+
+@{
+    ViewData["title"] = "Edit Contact";
+}
+<h4>Edit Contact</h4>
+<div class="col-md-9">
+    <form asp-action="Edit" asp-controller="Contact" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label>Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Map</label>
+            <textarea asp-for="Map" class="form-control" />
+            <span asp-validation-for="Map" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input asp-for="Description" class="form-control"></input>
+            <span asp-validation-for="Description" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Image</label>
+            <input asp-for="ImageUpload" class="form-control-file" />
+            <span asp-validation-for="ImageUpload" class="text-danger" />
+            <img class="mt-2" src="~/media/logo/@Model.ImageUpload" width="100" />
+        </div> 
+        <div class="form-group">
+            <button class="btn btn-primary">Update</button>
+        </div>
+    </form>
+    <a asp-action="Index">Back to List Contact</a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace("Description");
+    </script> *@
+}
+
+
+

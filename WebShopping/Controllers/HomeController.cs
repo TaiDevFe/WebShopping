@@ -22,9 +22,10 @@ namespace WebShopping.Controllers
             var products = _dataContext.Products.Include("Category").Include("Brand").ToList();
             return View(products);
         }
-        public IActionResult Contact()
+        public async Task<IActionResult> Contact()
         {
-            return View();
+            var contact = await _dataContext.Contacts.FirstAsync();
+            return View(contact);
         }
 
         public IActionResult Privacy()
