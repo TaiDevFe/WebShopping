@@ -67,7 +67,7 @@ namespace WebShopping.Controllers
             _dataContext.Wishlists.Remove(wishlist);
             await _dataContext.SaveChangesAsync();
             TempData["success"] = "Đã xóa ra khỏi yêu thích";
-            return RedirectToAction("Wishlist");
+            return RedirectToAction("Wishlist", "Home");
         }
         public async Task<IActionResult> Compare()
 		{
@@ -104,7 +104,7 @@ namespace WebShopping.Controllers
             _dataContext.Compares.Remove(compare);
             await _dataContext.SaveChangesAsync();
             TempData["success"] = "Đã xóa ra khỏi so sánh";
-            return RedirectToAction("Compare");
+            return RedirectToAction("Compare","Home");
         }
 
         public IActionResult Privacy()

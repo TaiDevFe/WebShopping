@@ -21,6 +21,8 @@ namespace WebShopping.Models
         public int BrandID { get; set; }
         [Required, Range(1, int.MaxValue, ErrorMessage = "Chọn một danh mục")]
         public int CategoryId { get; set; }
+        public int Quantity { get; set; }
+        public int Sold { get; set; }
         public CategoryModel Category { get; set; }
         public BrandModel Brand { get; set; }
         public RatingModel Ratings { get; set; }

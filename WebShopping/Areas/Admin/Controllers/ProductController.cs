@@ -184,7 +184,33 @@ namespace WebShopping.Areas.Admin.Controllers
             TempData["error"] = "Đã xóa sản phẩm";
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public async Task<IActionResult> AddQuantity(int Id)
+        {
+            var productbyquantity = await _dataContext.ProductQuantities.Where(pq => pq.ProductId == Id).ToListAsync();
+            ViewBag.Id = Id;
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StoreProductQuantity(ProductQuantityModel productQuantityModel)
+        {
+            var product = _dataContext.Products.Find(productQuantityModel.ProductId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            product.Quantity += productQuantityModel.Quantity;
 
+            productQuantityModel.ProductId = productQuantityModel.ProductId;
+            productQuantityModel.Quantity = productQuantityModel.Quantity;
+            productQuantityModel.DateCreated = DateTime.Now;
+            _dataContext.Add(productQuantityModel);
+            _dataContext.SaveChangesAsync();
+            TempData["success"] = "Thêm số lượng thành công";
+            return RedirectToAction("Index", "Product", new {Id = productQuantityModel.ProductId });
+        }
     }
+
 }
 

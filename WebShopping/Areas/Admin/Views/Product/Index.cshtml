@@ -10,6 +10,8 @@
             <th scope="col">#</th>
             <th scope="col">Product Name</th>
             <th scope="col">Product Description</th>
+            <th scope="col">Product Quantity</th>
+            <th scope="col">Product Sold</th>
             <th scope="col">Product Price </th>
             <th scope="col">Product Image</th>
             <th scope="col">Product Slug</th>
@@ -25,6 +27,11 @@
                 <th scope="row">@item.Id</th>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
+                <td style="text-align: center;">
+                    <a asp-controller="Product" asp-action="AddQuantity" asp-route-Id="@item.Id">Add Quantity</a><br>
+                    <span>@item.Quantity</span>
+                </td>
+                <td>@item.Sold</td>
                 <td>@item.Price.ToString("#,##0 VND")</td>
                 <td><img src="~/images/@item.Image" width="100" /></td>
                 <td>@item.Slug</td>
