@@ -188,6 +188,7 @@ namespace WebShopping.Areas.Admin.Controllers
         public async Task<IActionResult> AddQuantity(int Id)
         {
             var productbyquantity = await _dataContext.ProductQuantities.Where(pq => pq.ProductId == Id).ToListAsync();
+            ViewBag.ProductByQuantity = productbyquantity;
             ViewBag.Id = Id;
             return View();
         }

@@ -42,10 +42,19 @@
 						<span>@Model.ProductDetails.Price.ToString("#,##0 VND")</span>
 						<label>Quantity: 1</label>
 						<input type="text" value="3" />
+						@if(@Model.ProductDetails.Quantity >0)
+						{
 						<button asp-action="Add" asp-controller="Cart" asp-route-Id="@Model.ProductDetails.Id" type="button" class="btn btn-fefault cart">
 							<i class="fa fa-shopping-cart"></i>
-							Add to cart
-						</button>
+							Thêm giỏ hàng
+							</button>
+						}else
+						{
+							<button type="button" class="btn btn-fefault">
+								<i class="fa fa-shopping-cart"></i>
+								Hết hàng
+							</button>
+						}
 					</span>
 					<p><b>Availability:</b> In Stock</p>
 					<p><b>Condition:</b> New</p>
