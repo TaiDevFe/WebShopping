@@ -31,7 +31,7 @@ namespace WebShopping.Controllers
 				if(result.Succeeded)
 				{
 					TempData["success"] = "Đăng nhập thành công";
-					var receiver = "demologin979@gmail.com";
+					var receiver = "thontanhanh@gmail.com";
 					var subject = "Đăng nhập trên thiết bị thành công";
 					var mesage = "Đăng nhập thành công";
 					await _emailSender.SendEmailAsync(receiver, subject, mesage);

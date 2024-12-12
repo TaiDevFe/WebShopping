@@ -11,11 +11,11 @@ namespace WebShopping.Areas.Admin.Repository
             {
                 EnableSsl = true, //bật bảo mật
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("demologin979@gmail.com", "qtuixzjxgpnetvrq")
+                Credentials = new NetworkCredential("thontanhanh@gmail.com", "hrjdbkvganlhmwzf")
             };
 
             return client.SendMailAsync(
-                new MailMessage(from: "demologin979@gmail.com",
+                new MailMessage(from: "thontanhanh@gmail.com",
                                 to: email,
                                 subject,
                                 message
