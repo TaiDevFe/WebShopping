@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 using WebShopping.Areas.Admin.Repository;
 using WebShopping.Models;
@@ -27,6 +28,15 @@ namespace WebShopping.Controllers
 				var ordercode = Guid.NewGuid().ToString();
 				var orderItem = new OrderModel();
 				orderItem.OrderCode = ordercode;
+				var shippingPriceCookie = Request.Cookies["ShippingPrice"];
+				decimal shippingPrice = 0;
+
+				if (!string.IsNullOrEmpty(shippingPriceCookie))
+				{
+					var shippingPriceJson = shippingPriceCookie;
+					shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
+				}
+				orderItem.ShippingCost = shippingPrice;
 				orderItem.UserName = userEmail;
 				orderItem.Status = 1;
 				orderItem.CreatedDate = DateTime.Now;

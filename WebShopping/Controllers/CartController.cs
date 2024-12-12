@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebShopping.Models;
 using WebShopping.Models.ViewModels;
 using WebShopping.Repository;
@@ -15,11 +17,20 @@ namespace WebShopping.Controllers
         public IActionResult Index()
         {
             List<CartItemModel> cartItems = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
-            CartItemViewModel cartVM = new()
-            {
-                CartItems = cartItems,
-                GrandTotal = cartItems.Sum(x => x.Quantity * x.Price)
-            };
+			var shippingPriceCookie = Request.Cookies["ShippingPrice"];
+			decimal shippingPrice = 0;
+
+			if (!string.IsNullOrEmpty(shippingPriceCookie))
+			{
+				var shippingPriceJson = shippingPriceCookie;
+				shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
+			}
+			CartItemViewModel cartVM = new()
+			{
+				CartItems = cartItems,
+				GrandTotal = cartItems.Sum(x => x.Quantity * x.Price),
+				ShippingCost = shippingPrice,
+			}; 
             return View(cartVM);
         }
 		public IActionResult Checkout()
@@ -108,6 +119,44 @@ namespace WebShopping.Controllers
 			HttpContext.Session.Remove("Cart");
             TempData["success"] = "Clear All Cart Successfuly";
             return RedirectToAction("Index");
+		}
+		[HttpPost]
+		public async Task<IActionResult> GetShipping(ShippingModel shipping, string quan, string phuong, string tinh)
+		{
+			var existingShipping = await _dataContext.Shippings.FirstOrDefaultAsync(x => x.City == tinh && x.District == quan && x.Ward == phuong);
+
+			decimal shippingPrice = 0;
+			if (existingShipping != null)
+			{
+				shippingPrice = existingShipping.Price;
+			}
+			else
+			{
+				shippingPrice = 30000; 
+			}
+			var shippingPriceJson = JsonConvert.SerializeObject(shippingPrice);
+			try
+			{
+				var cookieOptions = new CookieOptions
+				{
+					HttpOnly = true,
+					Expires = DateTimeOffset.UtcNow.AddMinutes(30),
+					Secure = true,
+				};
+				Response.Cookies.Append("ShippingPrice", shippingPriceJson, cookieOptions);
+
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Lỗi");
+			}
+			return Json(new { ShippingPrice = shippingPrice });
+		}
+		[HttpGet]
+		public IActionResult DeleteShipping() 
+		{
+			Response.Cookies.Delete("ShippingPrice");
+			return RedirectToAction("Index","Cart");
 		}
 	}	
 }

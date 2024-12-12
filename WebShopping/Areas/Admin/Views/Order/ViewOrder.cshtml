@@ -35,15 +35,25 @@
                 <td>@subtotal.ToString("C")</td>          
             </tr>
         }
-    <th colspan="5">Total :</th>
-    <td>@subtotal.ToString("C")</td>
-    <td>
-        <select class="form-control select-update-order">
-            <option value="1">Đơn hàng mới</option>
-            <option value="0">Đã xử lý</option>
-        </select>
-    </td>
+        <tr>
+            <td>Total :</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@total.ToString("#,##0 ")</td>
+             <td>Shipping Cost : @ViewBag.ShippingCost.ToString("#,## VNĐ")</td>
+            <td>
+                <select class="form-control select-update-order">
+                    <option value="1">Đơn hàng mới</option>
+                    <option value="0">Đã xử lý</option>
+                </select>
+            </td>
+        </tr>
+          @* <td>@subtotal.ToString("C")</td> *@
+   
     <a class="btn btn-primary" href="Index">Quay về</a>
+    </tr>
     </tbody>
 </table>
 @section Scripts {
