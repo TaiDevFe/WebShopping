@@ -1,0 +1,29 @@
+﻿﻿@{
+    var currentUrl = Url.ActionContext.HttpContext.Request.Path;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">     
+        <h5 class="text-center"><span>Sắp xếp theo</span></h5>
+        <select class="form-control text-center" id="sort_by" onchange="location = this.value;">
+            <option value="@currentUrl">-----Chọn sắp xếp-----</option>
+            <option value="@currentUrl?sort_by=price_increase">Giá tăng dần</option>
+            <option value="@currentUrl?sort_by=price_decrease">Giá giảm dần</option>
+            <option value="@currentUrl?sort_by=price_newest">Mới nhất</option>
+            <option value="@currentUrl?sort_by=price_oldest">Cũ nhất</option>
+        </select>
+    </div>
+        <div class="col-md-5">
+            <h5>lọc theo giá</h5>
+            <form asp-action="index" asp-controller="category" method="get">
+                <p>
+                    <label for="amount">Price range:</label>
+                    <input type="text" id="amount" readonly="" style="border:0; color:#f6931f; font-weight:bold;">
+                </p>
+                
+                <div id="slider-range"></div>
+                <button type="submit" name="locgia" data-current_url="@currentUrl" class="btn btn-danger mt-2">Lọc giá</button>
+            </form>
+        </div>
+    </div>
+</div>

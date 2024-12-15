@@ -4,6 +4,7 @@
 </div>
 
 <div class="col-sm-9 padding-right">
+	<partial name="_FilterProductsPartial"/>
 	<div class="features_items">
 		<!--features_items-->
 		<h2 class="title text-center">Features Items</h2>
@@ -45,5 +46,63 @@
 				</div>
 			</div>
 			<!--features_items-->
+		}
+		@section Scripts {
+			<!-- jQuery -->
+			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+			<!-- jQuery UI -->
+			<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+			<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+			<script type="text/javascript">
+				$(document).ready(function () {
+					$('#sort_by').on('change', function () {
+						var url = $(this).val();
+						if (url) {
+							window.location = url;
+						}
+						return false;
+					});
+				});
+			</script>
+			<script>
+				$(document).ready(function () {
+
+					$(function () {
+						$("#slider-range").slider({
+							range: true,
+							step: 10,
+							min: 10,
+							max: 500,
+							values: [10, 500],
+							slide: function (event, ui) {
+								$("#amount").val(
+									new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(ui.values[0]) +
+									" - " +
+									new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(ui.values[1])
+								);
+
+							}
+						});
+						$("#amount").val(
+							new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format($("#slider-range").slider("values", 0)) +
+							" - " +
+							new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format($("#slider-range").slider("values", 1))
+						);
+
+					});
+
+					$('.btn_gia').on('click', function () {
+						var url = $(this).data('current_url');
+						if (url) {
+							window.location = url + "?startprice=" + $("#slider-range").slider("values", 0)
+								+ "&endprice=" + $("#slider-range").slider("values", 1);
+						}
+						return false;
+					});
+				});
+			</script>
+			
 		}
 
