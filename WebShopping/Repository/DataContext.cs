@@ -22,6 +22,7 @@ namespace WebShopping.Repository
 		public DbSet<CompareModel> Compares { get; set; }
         public DbSet<ProductQuantityModel> ProductQuantities { get; set; }
 		public DbSet<ShippingModel> Shippings { get; set; }
+		public DbSet<CouponModel> Coupons { get; set; }
 
 	}
 }

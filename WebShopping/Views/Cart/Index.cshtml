@@ -58,6 +58,7 @@ Giỏ hàng
 							<td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
 							<td colspan="2" class="text-start">@Model.GrandTotal.ToString("#,##0 VNĐ")</td>
 						</tr>
+						
 						<tr>
 							<td colspan="4" class="text-end"><strong>Shipping Cost:</strong></td>
 							<td colspan="2" class="text-start">@Model.ShippingCost.ToString("#,##0 VNĐ")</td>
@@ -97,6 +98,13 @@ Giỏ hàng
 								</div>
 							</td>
 						</tr>
+						<tr>
+							<form>
+								Coupon Code: <input type="text" class="form-control coupon-value" />
+								<span class="text text-success">@Model.CouponCode</span><br />
+								<input type="button" value="Apply" class="btn btn-sm btn-primary btn-apply-coupon" />
+							</form>
+						</tr>
 					}
 					else
 					{
@@ -112,6 +120,29 @@ Giỏ hàng
 	</div>
 </section> <!--/#cart_items-->
 @section Scripts {
+	<script>
+		$(".btn-apply-coupon").click(function (event) {
+			event.preventDefault(); // Prevent form submission
+
+			var coupon_value = $(".coupon-value").val();
+			$.ajax({
+				type: "POST",
+				url: "@Url.Action("GetCoupon", "Cart")",
+				data: { coupon_value: coupon_value },
+				success: function (result) {
+					if (result.success) {
+						alert("Áp phiếu giảm giá thành công");
+						location.reload();
+					} else {
+						alert(result.message);
+					}
+				},
+				error: function () {
+					alert("Đã xảy ra lỗi khi áp dụng phiếu giảm giá.");
+				}
+			});
+		});
+	</script>
 	<script>
 		$(".btn-add-shipping").on("click", function () {
 			var tinh = $("#tinh").find("option:selected").text();

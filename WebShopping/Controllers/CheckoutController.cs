@@ -30,13 +30,14 @@ namespace WebShopping.Controllers
 				orderItem.OrderCode = ordercode;
 				var shippingPriceCookie = Request.Cookies["ShippingPrice"];
 				decimal shippingPrice = 0;
-
+				var coupon_code = Request.Cookies["CouponTitle"];
 				if (!string.IsNullOrEmpty(shippingPriceCookie))
 				{
 					var shippingPriceJson = shippingPriceCookie;
 					shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
 				}
 				orderItem.ShippingCost = shippingPrice;
+				orderItem.CouponCode = coupon_code;
 				orderItem.UserName = userEmail;
 				orderItem.Status = 1;
 				orderItem.CreatedDate = DateTime.Now;

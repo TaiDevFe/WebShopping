@@ -19,7 +19,7 @@ namespace WebShopping.Controllers
             List<CartItemModel> cartItems = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
 			var shippingPriceCookie = Request.Cookies["ShippingPrice"];
 			decimal shippingPrice = 0;
-
+			var coupon_code = Request.Cookies["CouponTitle"];
 			if (!string.IsNullOrEmpty(shippingPriceCookie))
 			{
 				var shippingPriceJson = shippingPriceCookie;
@@ -30,6 +30,7 @@ namespace WebShopping.Controllers
 				CartItems = cartItems,
 				GrandTotal = cartItems.Sum(x => x.Quantity * x.Price),
 				ShippingCost = shippingPrice,
+				CouponCode = coupon_code
 			}; 
             return View(cartVM);
         }
@@ -157,6 +158,56 @@ namespace WebShopping.Controllers
 		{
 			Response.Cookies.Delete("ShippingPrice");
 			return RedirectToAction("Index","Cart");
+		}
+		[HttpPost]
+		[Route("Cart/GetCoupon")]
+		public async Task<IActionResult> GetCoupon(CouponModel couponModel, string coupon_value)
+		{
+			var validCoupon = await _dataContext.Coupons
+				.FirstOrDefaultAsync(x => x.Name == coupon_value && x.Quantity >= 1);
+			if (validCoupon == null)
+			{
+				return Ok(new { success = false, message = "Mã giảm giá đã hết hạn hoặc đã hết số lượng" });
+			}
+			string couponTitle = validCoupon.Name + " - " + validCoupon?.Description;
+
+			if (couponTitle != null)
+			{
+				TimeSpan remainingTime = validCoupon.DateExpried - DateTime.Now;
+				int daysRemaining = remainingTime.Days;
+
+				if (daysRemaining >= 0)
+				{
+					try
+					{
+						var cookieOptions = new CookieOptions
+						{
+							HttpOnly = true,
+							Expires = DateTimeOffset.UtcNow.AddMinutes(30),
+							Secure = true,
+							SameSite = SameSiteMode.Strict // Kiểm tra tính tương thích trình duyệt
+						};
+
+						Response.Cookies.Append("CouponTitle", couponTitle, cookieOptions);
+						return Ok(new { success = true, message = "Coupon applied successfully" });
+					}
+					catch (Exception ex)
+					{
+						return Ok(new { success = false, message = "Coupon applied falied" });
+					}
+				}
+				else
+				{
+					return Ok(new { success = false, message = "Coupon has expried" });
+				}
+			}
+			else
+			{
+				return Ok(new { success = false, message = "Coupon has not exists" });
+			}
+
+
+			return Json(new { CouponTitle = couponTitle });
 		}
 	}	
 }
