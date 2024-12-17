@@ -95,8 +95,8 @@
 								<li><a asp-action="Index" asp-controller="Cart"><i class="fa fa-shopping-cart"></i>Cart</a></li>
 								@if(User.Identity?.IsAuthenticated ?? false)
 								{				
-									<li><a asp-action="Index" asp-controller="Cart"><i class="fa fa-crosshairs"></i>Checkout</a></li>														
-									<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+									<li><a asp-action="Index" asp-controller="Cart"><i class="fa fa-crosshairs"></i>Checkout</a></li>
+									<li><a asp-action="History" asp-controller="Account"><i class="fa fa-user"></i>Account</a></li>
 									<li><a asp-action="Wishlist" asp-controller="Home"><i class="fa fa-star"></i> Wishlist</a></li>
 									<li><a asp-action="Compare" asp-controller="Home"><i class="fa fa-user"></i> Compare</a></li>
 									<li><a asp-action="Index" asp-controller="Product" asp-area="Admin"><i class="fa fa-user"></i> Admin</a></li>
@@ -164,71 +164,71 @@
 		</div><!--/header-bottom-->
 	</header><!--/header-->
 
-	<section id="slider">
-		<!--slider-->
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
-						<ol class="carousel-indicators">
-							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-							<li data-target="#slider-carousel" data-slide-to="1"></li>
-							<li data-target="#slider-carousel" data-slide-to="2"></li>
-						</ol>
+	@*  <section id="slider">
+	 	<!--slider-->
+	 	<div class="container">
+	 		<div class="row">
+	 			<div class="col-sm-12">
+	 				<div id="slider-carousel" class="carousel slide" data-ride="carousel">
+	 					<ol class="carousel-indicators">
+	 						<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+	 						<li data-target="#slider-carousel" data-slide-to="1"></li>
+	 						<li data-target="#slider-carousel" data-slide-to="2"></li>
+	 					</ol>
 
-						<div class="carousel-inner">
-							<div class="item active">
-								<div class="col-sm-6">
-									<h1><span>Technology</span>-SHOPPER</h1>
-									<h2>Mua sắm thiết bị công nghệ</h2>
-									<p>Kết nối tương lai với thiết bị công nghệ hiện đại – tiện ích vượt mong đợi, phong cách dẫn đầu!</p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="~/images/default/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="~/images/default/pricing.png" class="pricing" alt="" />
-								</div>
-							</div>
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>Mẫu điện thoại hàng đầu</span>-SHOPPER</h1>
-									<h2>100% Responsive Design</h2>
-									<p>Sở hữu ngay chiếc điện thoại mơ ước - công nghệ vượt trội, giá cả hợp lý, nâng tầm trải nghiệm cuộc sống!</p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="~/images/default/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="~/images/default/pricing.png" class="pricing" alt="" />
-								</div>
-							</div>
+	 					<div class="carousel-inner">
+	 						<div class="item active">
+	 							<div class="col-sm-6">
+	 								<h1><span>Technology</span>-SHOPPER</h1>
+	 								<h2>Mua sắm thiết bị công nghệ</h2>
+	 								<p>Kết nối tương lai với thiết bị công nghệ hiện đại – tiện ích vượt mong đợi, phong cách dẫn đầu!</p>
+	 								<button type="button" class="btn btn-default get">Get it now</button>
+	 							</div>
+	 							<div class="col-sm-6">
+	 								<img src="~/images/default/girl1.jpg" class="girl img-responsive" alt="" />
+	 								<img src="~/images/default/pricing.png" class="pricing" alt="" />
+	 							</div>
+	 						</div>
+	 						<div class="item">
+	 							<div class="col-sm-6">
+	 								<h1><span>Mẫu điện thoại hàng đầu</span>-SHOPPER</h1>
+	 								<h2>100% Responsive Design</h2>
+	 								<p>Sở hữu ngay chiếc điện thoại mơ ước - công nghệ vượt trội, giá cả hợp lý, nâng tầm trải nghiệm cuộc sống!</p>
+	 								<button type="button" class="btn btn-default get">Get it now</button>
+	 							</div>
+	 							<div class="col-sm-6">
+	 								<img src="~/images/default/girl2.jpg" class="girl img-responsive" alt="" />
+	 								<img src="~/images/default/pricing.png" class="pricing" alt="" />
+	 							</div>
+	 						</div>
 
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>Computer</span>-SHOPPER</h1>
-									<h2>Máy tính có cấu hình cao</h2>
-									<p>Khám phá sức mạnh vượt trội với chiếc máy tính hiện đại – đồng hành hoàn hảo cho công việc và giải trí!</p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="images/default/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="images/default/pricing.png" class="pricing" alt="" />
-								</div>
-							</div>
+	 						<div class="item">
+	 							<div class="col-sm-6">
+	 								<h1><span>Computer</span>-SHOPPER</h1>
+	 								<h2>Máy tính có cấu hình cao</h2>
+	 								<p>Khám phá sức mạnh vượt trội với chiếc máy tính hiện đại – đồng hành hoàn hảo cho công việc và giải trí!</p>
+	 								<button type="button" class="btn btn-default get">Get it now</button>
+	 							</div>
+	 							<div class="col-sm-6">
+	 								<img src="images/default/girl3.jpg" class="girl img-responsive" alt="" />
+	 								<img src="images/default/pricing.png" class="pricing" alt="" />
+	 							</div>
+	 						</div>
 
-						</div>
+	 					</div>
 
-						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-							<i class="fa fa-angle-left"></i>
-						</a>
-						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-							<i class="fa fa-angle-right"></i>
-						</a>
-					</div>
+	 					<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+	 						<i class="fa fa-angle-left"></i>
+	 					</a>
+	 					<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+	 						<i class="fa fa-angle-right"></i>
+	 					</a>
+	 				</div>
 
-				</div>
-			</div>
-		</div>
-	</section><!--/slider-->
+	 			</div>
+	 		</div>
+	 	</div>
+	 </section><!--/slider--> *@
 
 	<section>
 		<div class="container">

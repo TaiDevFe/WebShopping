@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using WebShopping.Areas.Admin.Repository;
@@ -52,17 +53,20 @@ namespace WebShopping.Controllers
 					orderdetails.ProductId = cart.ProductID;
 					orderdetails.Price = cart.Price;
 					orderdetails.Quantity = cart.Quantity;
+					var product = await _dataContext.Products.Where(p=>p.Id == cart.ProductID).FirstOrDefaultAsync();
+					product.Quantity -= cart.Quantity;
+					product.Sold += cart.Quantity;
 					_dataContext.Add(orderdetails);
 					_dataContext.SaveChanges();
 				}
 				HttpContext.Session.Remove("Cart");
-                //send mail 
-                var receiver = "demologin979@gmail.com";
+				//send mail 
+				var receiver = userEmail;
                 var subject = "Đặt hàng thành công";
                 var mesage = "Đặt hàng thành công , cảm ơn đã sử dụng dịch vụ";
                 await _emailSender.SendEmailAsync(receiver, subject, mesage);
                 TempData["success"] = "Tạo đơn hàng thành công";
-				return RedirectToAction("Index","Cart");
+				return RedirectToAction("History","Account");
 			}
 			return View();
 		}
