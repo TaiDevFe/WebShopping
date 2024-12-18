@@ -110,5 +110,26 @@ namespace WebShopping.Controllers
 			await _signInManager.SignOutAsync();
 			return Redirect(returnUrl);
 		}
+		//public async Task<IActionResult> UpdateAccount(AppUserModel user , string token)
+		//{
+		//	var checkuser = await _userManager.Users.Where(u => u.Email == user.Email).Where(u => u.token == user.token).FirstOrDefaultAsync();
+		//	if (checkuser != null)
+		//	{
+		//		string newtoken = Guid.NewGuid().ToString();
+
+		//		var passwordHasher = new PasswordHasher<AppUserModel>();
+		//		var passwordHash = passwordHasher.HashPassword(checkuser, user.PasswordHash);
+		//		checkuser.PasswordHash = passwordHash;
+
+		//		checkuser.Token = newtoken;
+
+		//		await _userManager.UpdateAsync(checkuser);
+		//		return RedirectToAction("Login", "Account");
+		//	}
+		//	else
+		//	{
+		//		return RedirectToAction("ForgetPass", "Account");
+		//	}
+		//}
 	}
 }
