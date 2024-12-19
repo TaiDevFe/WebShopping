@@ -1,17 +1,15 @@
-﻿@model AppUserModel
+﻿ @model AppUserModel
 
 @{
 	ViewData["Title"] = "Update Account";
 }
 <section>
-	<!--form-->
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8 col-sm-offset-1">
-				<div class="signup-form">
-					<!--sign up form-->
+				<div class="signup-form"> 
 					<h2>Information Account</h2>
-					<form autocomplete="off" asp-action="UpdateAccount" asp-controller="Account" method="post">
+					<form autocomplete="off" asp-action="UpdateInfoAccount" asp-controller="Account" method="post">
 					<input type="hidden" asp-for="Id"/>
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					

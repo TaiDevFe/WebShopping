@@ -110,8 +110,21 @@ namespace WebShopping.Controllers
 			await _signInManager.SignOutAsync();
 			return Redirect(returnUrl);
 		}
-		[HttpPost]
+		[HttpGet]
 		public async Task<IActionResult> UpdateAccount(AppUserModel appUser)
+		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var userName = User.FindFirstValue(ClaimTypes.Name);
+			var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+			if (user == null)
+			{
+				return NotFound();
+			}
+			return View(user);
+
+		}
+		[HttpPost]
+		public async Task<IActionResult> UpdateInfoAccount(AppUserModel appUser)
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			var userById = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -131,7 +144,7 @@ namespace WebShopping.Controllers
 			}
 
 			return RedirectToAction("UpdateAccount", "Account");
-			return View();
+			
 		}
 	}
 }
