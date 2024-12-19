@@ -110,26 +110,28 @@ namespace WebShopping.Controllers
 			await _signInManager.SignOutAsync();
 			return Redirect(returnUrl);
 		}
-		//public async Task<IActionResult> UpdateAccount(AppUserModel user , string token)
-		//{
-		//	var checkuser = await _userManager.Users.Where(u => u.Email == user.Email).Where(u => u.token == user.token).FirstOrDefaultAsync();
-		//	if (checkuser != null)
-		//	{
-		//		string newtoken = Guid.NewGuid().ToString();
+		[HttpPost]
+		public async Task<IActionResult> UpdateAccount(AppUserModel appUser)
+		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var userById = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+			if (userById == null)
+			{
+				return NotFound();
+			}
+			else
+			{
+				var passwordHasher = new PasswordHasher<AppUserModel>();
+				var passwordHash = passwordHasher.HashPassword(userById, appUser.PasswordHash);
+				userById.PasswordHash = passwordHash;
+				_dataContext.Update(userById);
+				await _dataContext.SaveChangesAsync();
+				TempData["success"] = "Update Account Success";
 
-		//		var passwordHasher = new PasswordHasher<AppUserModel>();
-		//		var passwordHash = passwordHasher.HashPassword(checkuser, user.PasswordHash);
-		//		checkuser.PasswordHash = passwordHash;
+			}
 
-		//		checkuser.Token = newtoken;
-
-		//		await _userManager.UpdateAsync(checkuser);
-		//		return RedirectToAction("Login", "Account");
-		//	}
-		//	else
-		//	{
-		//		return RedirectToAction("ForgetPass", "Account");
-		//	}
-		//}
+			return RedirectToAction("UpdateAccount", "Account");
+			return View();
+		}
 	}
 }
