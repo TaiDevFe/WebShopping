@@ -38,28 +38,35 @@ namespace WebShopping.Controllers
 		{
 			return View("~/Views/Checkout/Index.cshtml");
 		}
-        public async Task<IActionResult> Add(int Id)
-        {
+		public async Task<IActionResult> Add(int Id)
+		{
 			if (!User.Identity.IsAuthenticated)
 			{
-				// Trả về lỗi không đăng nhập
-				return Json(new { success = false, message = "Bạn cần đăng nhập để thêm vào giỏ hàng." });
+				return Json(new { success = false, message = "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng." });
 			}
-			ProductModel product = await _dataContext.Products.FindAsync(Id);
+
+			var product = await _dataContext.Products.FindAsync(Id);
+			if (product == null)
+			{
+				return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+			}
+
 			List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
-            CartItemModel cartItems = cart.Where(c => c.ProductID == Id).FirstOrDefault();
-            if (cartItems == null) { 
-                cart.Add(new CartItemModel (product));
-            }
-            else
-            {
-                cartItems.Quantity += 1;
-            }
-            HttpContext.Session.SetJson("Cart", cart);
-            //TempData["success"] = "Thêm vào giỏ hàng thành công";
-            return Redirect(Request.Headers["Referer"].ToString());
-        }
-        public async Task<IActionResult> Decrease(int Id)
+			CartItemModel cartItem = cart.FirstOrDefault(c => c.ProductID == Id);
+
+			if (cartItem == null)
+			{
+				cart.Add(new CartItemModel(product));
+			}
+			else
+			{
+				cartItem.Quantity += 1;
+			}
+
+			HttpContext.Session.SetJson("Cart", cart);
+			return Json(new { success = true, message = "Sản phẩm đã được thêm vào giỏ hàng." });
+		}
+		public async Task<IActionResult> Decrease(int Id)
         {
             List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart"); 
             CartItemModel cartItem = cart.Where(c => c.ProductID == Id).FirstOrDefault();

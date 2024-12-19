@@ -92,14 +92,14 @@ Giỏ hàng
 										<a class="btn btn-danger me-2" asp-controller="Cart" asp-action="Clear">Clear Cart</a>
 										@if (User.Identity?.IsAuthenticated ?? false)
 										{
-											<a class="btn btn-success" asp-controller="Checkout" asp-action="Checkout">Đặt hàng</a>
-											<form style="margin-top:5px" method="post" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
+											<a class="btn btn-success" asp-controller="Checkout" asp-action="Index">Đặt hàng</a>
+											@* <form style="margin-top:5px" method="post" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
 												<input type="hidden" name="Name" value="@User.Identity.Name" />
 												<input type="hidden" name="Amount" value="@Model.GrandTotal" />
 												<input type="hidden" name="OrderDescription" value="Thanh toán VNPAY" />
 												<input type="hidden" name="OrderType" value="other" />
 												<button class="btn btn-success" type="submit">Thanh toán VnPay</button>
-											</form>
+											</form> *@
 											
 										}
 									</div>

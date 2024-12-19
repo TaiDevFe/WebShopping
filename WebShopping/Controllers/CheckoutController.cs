@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using WebShopping.Areas.Admin.Repository;
 using WebShopping.Models;
+using WebShopping.Models.ViewModels;
 using WebShopping.Repository;
 using WebShopping.Services.Vnpay;
 
@@ -14,12 +16,46 @@ namespace WebShopping.Controllers
 		private readonly IVnPayService _vnPayService;
 		private readonly DataContext _dataContext;
         private readonly IEmailSender _emailSender;
-        public CheckoutController(DataContext context , IEmailSender emailSender , IVnPayService vnPayService)
+		private readonly UserManager<AppUserModel> _userManager;
+		public CheckoutController(DataContext context , IEmailSender emailSender , IVnPayService vnPayService, UserManager<AppUserModel> userManager)
 		{  
 			_dataContext = context;
 			_emailSender = emailSender;
 			_vnPayService = vnPayService;
+			_userManager = userManager;
 		}
+		public async Task<IActionResult> Index()
+		{
+			List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
+			var userEmail = User.FindFirstValue(ClaimTypes.Email);
+			if (userEmail == null)
+			{
+				return RedirectToAction("Login", "Account");
+			}
+			// Lấy thông tin người dùng từ Identity
+			var user = await _userManager.FindByEmailAsync(userEmail);
+			if (user == null)
+			{
+				return RedirectToAction("Login", "Account");
+			}
+
+
+			decimal totalPrice = cart.Sum(item => item.Quantity * item.Price );
+
+			//// Tạo model cho view
+			var checkoutViewModel = new CheckViewModel
+			{
+				CartItems = cart,
+				UserName = user.UserName,
+				Email = user.Email,
+				Phone = user.PhoneNumber,
+				TotalPrice = totalPrice,
+			};
+
+			return View(checkoutViewModel);
+			
+		}
+		
 		public async Task<IActionResult> Checkout()
 		{
 			var userEmail = User.FindFirstValue(ClaimTypes.Email);

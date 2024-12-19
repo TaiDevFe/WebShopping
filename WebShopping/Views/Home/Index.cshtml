@@ -95,7 +95,7 @@
 								<p>Thương hiệu : @item.Brand.Name</p>
 								</a>
 								@if(item.Quantity>0){
-							<button class="btn btn-default add-to-cart" data-product_id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</button>
+								<button class="btn btn-default add-to-cart" data-logged-in="@User.Identity.IsAuthenticated" data-product_id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</button>
 								@* <a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a> *@
 							}
 							else

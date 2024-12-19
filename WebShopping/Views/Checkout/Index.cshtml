@@ -1,5 +1,192 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model CheckViewModel
+
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <h4>Thông tin chi tiết:</h4>
+            <form asp-action="Checkout" asp-controller="Checkout">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input form-group">
+                                    <label for="UserName">Tên <span>*</span></label>
+                                    <input type="text" class="form-control" asp-for="UserName">
+                                    <span style="color: red;" asp-validation-for="UserName"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkout__input form-group">
+                            <label for="Address">Địa chỉ cụ thể <span>*</span></label>
+                            <input type="text" class="form-control" asp-for="Address">
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input form-group">
+                                    <label for="Phone">Số điện thoại <span>*</span></label>
+                                    <input type="text" class="form-control" asp-for="Phone">
+                                    <span style="color: red;" asp-validation-for="Phone"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input form-group">
+                                    <label for="Email">Email <span>*</span></label>
+                                    <input type="text" class="form-control" asp-for="Email">
+                                    <span style="color: red;" asp-validation-for="Email"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkout__input__checkbox form-check">
+                            <input type="checkbox" class="form-check-input" id="diff-acc">
+                            <label class="form-check-label" for="diff-acc">Lưu địa chỉ?</label>
+                            
+                        </div>
+
+                        <div class="checkout__input form-group">
+                            <label for="OrderNotes">Ghi chú thông tin <span>*</span></label>
+                            <input type="text" class="form-control" asp-for="OrderNotes" placeholder="Nhập thông tin cần ghi chú!">
+                            <span class="text-danger" asp-validation-for="OrderNotes"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4>Đơn hàng của bạn</h4>
+                            <div class="checkout__order__products">
+                                Sản phẩm <span>Tổng tiền:</span>
+                            </div>
+                            @if (Model.CartItems.Count() > 0)
+                            {
+                                foreach (var item in Model.CartItems)
+                                {
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            @item.Quantity x @item.ProductName
+                                            <span class="float-right">@item.Total.ToString("#,##0 VNĐ")</span>
+                                        </li>
+                                    </ul>
+                                }
+                            }
+
+                            <div class="checkout__order__total mt-3">
+                                Tổng tiền cần thanh toán: <span>@Model.TotalPrice.ToString("#,##0 VNĐ")</span>
+                            </div>
+
+                            <div class="checkout__input__checkbox form-check mt-3">
+                                <input type="checkbox" class="form-check-input" id="acc-or">
+                                <label class="form-check-label" for="acc-or">Lưu lại thông tin?</label>
+                            </div>
+
+                            <a class="btn btn-success btn-block mt-4" asp-controller="Checkout" asp-action="Checkout">Thanh toán khi nhận hàng</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <input type="hidden" name="Name" value="@User.Identity.Name" />
+                        <input type="hidden" name="Amount" value="@Model.TotalPrice" />
+                        <input type="hidden" name="OrderDescription" value="Thanh toán qua Vnpay" />
+                        <input type="hidden" name="OrderType" value="other" />
+                        <input type="hidden" name="Phone" value="@Model.Phone" />
+                        <input type="hidden" name="Address" value="@Model.Address" />
+
+                        <button class="btn btn-primary btn-block" type="submit">Thanh toán với VNPAY</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+ @section Scripts {
+     @{
+         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+     }
+
+     <script>
+         $(document).ready(function () {
+             // Load Tỉnh/Thành phố
+             $.ajax({
+                 url: 'https://esgoo.net/api-tinhthanh/1/0.htm',
+                 method: 'GET',
+                 dataType: 'json',
+                 success: function (data_tinh) {
+                     if (data_tinh.error === 0) {
+                         $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                             $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                         });
+                     } else {
+                         console.error("API returned an error:", data_tinh);
+                     }
+                 },
+                 error: function (jqXHR, textStatus, errorThrown) {
+                     console.error("Error loading provinces:", textStatus, errorThrown);
+                     alert("Cannot load provinces. Please check the API or network connection.");
+                 }
+             });
+
+             // Change event for Tỉnh/Thành phố
+             $("#tinh").change(function () {
+                 var idtinh = $(this).val();
+                 // Load Quận/Huyện
+                 $.ajax({
+                     url: 'https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm',
+                     method: 'GET',
+                     dataType: 'json',
+                     success: function (data_quan) {
+                         if (data_quan.error === 0) {
+                             $("#quan").html('<option value="0">Quận huyện</option>');
+                             $("#phuong").html('<option value="0">Phường xã</option>');
+                             $.each(data_quan.data, function (key_quan, val_quan) {
+                                 $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                             });
+                         } else {
+                             console.error("API returned an error:", data_quan);
+                         }
+                     },
+                     error: function (jqXHR, textStatus, errorThrown) {
+                         console.error("Error loading districts:", textStatus, errorThrown);
+                         alert("Cannot load districts. Please check the API or network connection.");
+                     }
+                 });
+             });
+
+             // Change event for Quận/Huyện
+             $("#quan").change(function () {
+                 var idquan = $(this).val();
+                 // Load Phường/Xã
+                 $.ajax({
+                     url: 'https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm',
+                     method: 'GET',
+                     dataType: 'json',
+                     success: function (data_phuong) {
+                         if (data_phuong.error === 0) {
+                             $("#phuong").html('<option value="0">Phường xã</option>');
+                             $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                 $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                             });
+                         } else {
+                             console.error("API returned an error:", data_phuong);
+                         }
+                     },
+                     error: function (jqXHR, textStatus, errorThrown) {
+                         console.error("Error loading wards:", textStatus, errorThrown);
+                         alert("Cannot load wards. Please check the API or network connection.");
+                     }
+                 });
+             });
+         });
+     </script>
+ }
+ 
