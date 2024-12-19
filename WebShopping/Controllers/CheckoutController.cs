@@ -5,17 +5,20 @@ using System.Security.Claims;
 using WebShopping.Areas.Admin.Repository;
 using WebShopping.Models;
 using WebShopping.Repository;
+using WebShopping.Services.Vnpay;
 
 namespace WebShopping.Controllers
 {
 	public class CheckoutController : Controller
 	{
+		private readonly IVnPayService _vnPayService;
 		private readonly DataContext _dataContext;
         private readonly IEmailSender _emailSender;
-        public CheckoutController(DataContext context , IEmailSender emailSender)
+        public CheckoutController(DataContext context , IEmailSender emailSender , IVnPayService vnPayService)
 		{  
 			_dataContext = context;
 			_emailSender = emailSender;
+			_vnPayService = vnPayService;
 		}
 		public async Task<IActionResult> Checkout()
 		{
@@ -69,6 +72,13 @@ namespace WebShopping.Controllers
 				return RedirectToAction("History","Account");
 			}
 			return View();
+		}
+		[HttpGet]
+		public IActionResult PaymentCallbackVnpay()
+		{
+			var response = _vnPayService.PaymentExecute(Request.Query);
+
+			return Json(response);
 		}
 	}
 }

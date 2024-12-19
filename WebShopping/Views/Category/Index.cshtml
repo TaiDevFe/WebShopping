@@ -17,7 +17,7 @@
 						<div class="productinfo text-center">
 							<a asp-action="Details" asp-controller="Product" asp-route-ID="@item.Id">
 								<img src="~/images/@item.Image" alt="@item.Name" style="width:200px; height:150px; object-fit:cover;" />
-								<h2>$@item.Price.ToString("#,##0 VND")</h2>
+								<h2>$@item.Price.ToString("#,##0 VNĐ")</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
@@ -72,10 +72,10 @@
 					$(function () {
 						$("#slider-range").slider({
 							range: true,
-							step: 10,
-							min: 10,
-							max: 500,
-							values: [10, 500],
+							step: 10000,
+							min: 1000,
+							max: 5000000,
+							values: [1000, 5000000],
 							slide: function (event, ui) {
 								$("#amount").val(
 									new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(ui.values[0]) +

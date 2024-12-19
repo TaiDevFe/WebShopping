@@ -4,6 +4,7 @@
 </div>
 
 <div class="col-sm-9 padding-right">
+	<partial name="_FilterProductsPartial"/>
 	<div class="features_items">
 		<!--features_items-->
 		<h2 class="title text-center">Features Items</h2>
@@ -16,7 +17,7 @@
 						<div class="productinfo text-center">
 							<a asp-action="Details" asp-controller="Product" asp-route-ID="@item.Id">
 								<img src="~/images/@item.Image" alt="@item.Name" style="width:200px; height:150px; object-fit:cover;" />
-								<h2>$@item.Price.ToString("#,##0 VND")</h2>
+								<h2>$@item.Price.ToString("#,##0 VNĐ")</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
@@ -47,6 +48,12 @@
 			<!--features_items-->
 		}
 		@section Scripts {
+			<!-- jQuery -->
+			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+			<!-- jQuery UI -->
+			<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+			<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function () {
 					$('#sort_by').on('change', function () {
@@ -55,6 +62,43 @@
 							window.location = url;
 						}
 						return falsel;
+					});
+				});
+			</script>
+			<script>
+				$(document).ready(function () {
+
+					$(function () {
+						$("#slider-range").slider({
+							range: true,
+							step: 10000,
+							min: 1000,
+							max: 5000000,
+							values: [1000, 5000000],
+							slide: function (event, ui) {
+								$("#amount").val(
+									new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(ui.values[0]) +
+									" - " +
+									new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(ui.values[1])
+								);
+
+							}
+						});
+						$("#amount").val(
+							new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format($("#slider-range").slider("values", 0)) +
+							" - " +
+							new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format($("#slider-range").slider("values", 1))
+						);
+
+					});
+
+					$('.btn_gia').on('click', function () {
+						var url = $(this).data('current_url');
+						if (url) {
+							window.location = url + "?startprice=" + $("#slider-range").slider("values", 0)
+								+ "&endprice=" + $("#slider-range").slider("values", 1);
+						}
+						return false;
 					});
 				});
 			</script>

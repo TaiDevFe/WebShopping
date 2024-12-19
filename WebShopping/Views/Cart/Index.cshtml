@@ -38,7 +38,7 @@ Giỏ hàng
 								<td class="align-middle">
 									<h5>@item.ProductName</h5>
 								</td>
-								<td class="align-middle">@item.Price.ToString("#,##0 VND")</td>
+								<td class="align-middle">@item.Price.ToString("#,##0 VNĐ")</td>
 								<td class="align-middle">
 									<div class="d-flex justify-content-center align-items-center">
 										<a class="btn btn-outline-secondary btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-id="@item.ProductID">-</a>
@@ -93,6 +93,14 @@ Giỏ hàng
 										@if (User.Identity?.IsAuthenticated ?? false)
 										{
 											<a class="btn btn-success" asp-controller="Checkout" asp-action="Checkout">Đặt hàng</a>
+											<form style="margin-top:5px" method="post" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
+												<input type="hidden" name="Name" value="@User.Identity.Name" />
+												<input type="hidden" name="Amount" value="@Model.GrandTotal" />
+												<input type="hidden" name="OrderDescription" value="Thanh toán VNPAY" />
+												<input type="hidden" name="OrderType" value="other" />
+												<button class="btn btn-success" type="submit">Thanh toán VnPay</button>
+											</form>
+											
 										}
 									</div>
 								</div>

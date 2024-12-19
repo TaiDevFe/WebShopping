@@ -106,8 +106,8 @@ namespace WebShopping.Controllers
 				return View(new List<ProductModel>());
 			}
 		}
-		}
 	}
+}
 
     
 

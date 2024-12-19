@@ -1,4 +1,13 @@
 ﻿@model IEnumerable<ProductModel>
+@{
+	Paginate pager = new Paginate();
+	int pageNo = 0;
+	if(ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
+}
 <section id="slider">
 	<!--slider-->
 	<div class="container">
@@ -80,7 +89,7 @@
 							<div class="productinfo text-center">
 								<a asp-action="Details" asp-controller="Product" asp-route-ID="@item.Id">
 								<img src="~/images/@item.Image" alt="@item.Name" style="width:200px; height:150px; object-fit:cover;" />
-								<h2>$@item.Price.ToString("#,##0 VND")</h2>
+								<h2>$@item.Price.ToString("#,##0 VNĐ")</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
@@ -109,8 +118,9 @@
 			</div>
 			<!--features_items-->
 		}
+		<partial name="_Paging" model="@pager"></partial>
 @section Scripts {
-	<script>
+	@* <script>
 		$(document).ready(function () {
 			$('.add-to-cart').click(function () {
 				var Id = $(this).data("product_id");
@@ -126,7 +136,46 @@
 				});
 			});
 				});
-	</script>
+	</script> *@
+			<script>
+				$(document).ready(function () {
+					$('.add-to-cart').click(function () {
+						var isLoggedIn = $(this).data("logged-in");
+						if (!isLoggedIn) {
+							Swal.fire({
+								icon: "warning",
+								title: "Thông báo",
+								text: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.",
+								confirmButtonText: "Đăng nhập",
+								showCancelButton: true,
+								cancelButtonText: "Hủy"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									window.location.href = '@Url.Action("Login", "Account")';
+								}
+							});
+							return; // Ngăn việc gửi yêu cầu nếu chưa đăng nhập
+						}
+
+						var Id = $(this).data("product_id");
+						$.ajax({
+							type: "POST",
+							url: "@Url.Action("Add", "Cart")",
+							data: { Id: Id },
+							success: function (response) {
+								if (response.success) {
+									Swal.fire("Thành công!", response.message, "success");
+								} else {
+									Swal.fire("Lỗi!", response.message, "error");
+								}
+							},
+							error: function () {
+								Swal.fire("Lỗi!", "Đã xảy ra lỗi khi thêm vào giỏ hàng.", "error");
+							}
+						});
+					});
+				});
+			</script>
 	<script>
 				$(document).ready(function () {
 					$('.add-btn-wishlist').click(function () {

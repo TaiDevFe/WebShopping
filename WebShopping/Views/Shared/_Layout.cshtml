@@ -62,7 +62,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="~/images/default/logo.png" alt="" /></a>
+							<a asp-action="Index" asp-controller="Home"><img src="~/images/default/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -142,20 +142,18 @@
 								<li class="dropdown">
 									<a asp-controller="Product" asp-action="Index">Shop<i class="fa fa-angle-down"></i></a>
 									<ul role="menu" class="sub-menu">
-										<li><a asp-action="Index" asp-controller="Category">Categories</a></li>
-										<li><a asp-action="Details" asp-controller="Product">Product Details</a></li>
 										<li><a asp-action="Checkout" asp-controller="Cart">Checkout</a></li>
 										<li><a asp-action="Index" asp-controller="Cart">Cart</a></li>
-										<li><a asp-action="Index" asp-controller="Login">Login</a></li>
+
 									</ul>
 								</li>
-								<li class="dropdown">
+								@* <li class="dropdown">
 									<a href="#">Blog<i class="fa fa-angle-down"></i></a>
 									<ul role="menu" class="sub-menu">
 										<li><a href="blog.html">Blog List</a></li>
 										<li><a href="blog-single.html">Blog Single</a></li>
 									</ul>
-								</li>
+								</li> *@
 								<li><a href="404.html">404</a></li>
 								<li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
 							</ul>
@@ -265,7 +263,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="~/images/home/iframe1.png" alt="" />
+										<img src="~/images/default/logo-iphone.jpg" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -280,7 +278,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="~/images/home/iframe2.png" alt="" />
+										<img src="~/images/default/Logo-oppo.jpg" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -295,7 +293,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="~/images/home/iframe3.png" alt="" />
+										<img src="~/images/default/logo-samsung.jpg" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -310,7 +308,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="~/images/home/iframe4.png" alt="" />
+										<img src="~/images/default/Realme_logo.png" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -323,7 +321,7 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="address">
-							<img src="~/images/home/map.png" alt="" />
+							<img src="~/images/default/map.png" alt="" />
 							<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
 						</div>
 					</div>

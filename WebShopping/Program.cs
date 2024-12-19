@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using WebShopping.Areas.Admin.Repository;
 using WebShopping.Models;
 using WebShopping.Repository;
+using WebShopping.Services.Vnpay;
 
 var builder = WebApplication.CreateBuilder(args);
+
 //Connection db 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -20,6 +22,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
 });
+
 
 builder.Services.AddIdentity<AppUserModel,IdentityRole>()
 	.AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
@@ -47,7 +50,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 	options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 	options.SlidingExpiration = true;
 });
-
+//conncect vnpay
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 var app = builder.Build();
 app.UseStatusCodePagesWithRedirects("/Home/Error?statuscode={0}");

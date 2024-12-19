@@ -40,7 +40,12 @@ namespace WebShopping.Controllers
 		}
         public async Task<IActionResult> Add(int Id)
         {
-            ProductModel product = await _dataContext.Products.FindAsync(Id);
+			if (!User.Identity.IsAuthenticated)
+			{
+				// Trả về lỗi không đăng nhập
+				return Json(new { success = false, message = "Bạn cần đăng nhập để thêm vào giỏ hàng." });
+			}
+			ProductModel product = await _dataContext.Products.FindAsync(Id);
 			List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
             CartItemModel cartItems = cart.Where(c => c.ProductID == Id).FirstOrDefault();
             if (cartItems == null) { 
